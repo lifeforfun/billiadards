@@ -9,7 +9,7 @@ namespace backend\lib;
 
 use Yii;
 use yii\filters\AccessControl;
-use Yii\Web\Controller as CController;
+use yii\web\Controller as CController;
 
 class Controller extends CController
 {
@@ -24,11 +24,11 @@ class Controller extends CController
                         'roles' => ['@'],
                     ],
                 ],
+                'denyCallback' => function() {
+                    Yii::$app->response->redirect(['login/index']);
+                    return true;
+                }
             ],
-            'matchCallback' => function() {
-                Yii::$app->response->redirect(['login/index']);
-                return true;
-            }
         ];
     }
 }
