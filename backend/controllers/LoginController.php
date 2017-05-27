@@ -9,7 +9,9 @@ namespace backend\controllers;
 
 use Yii;
 use backend\lib\Controller;
+use backend\lib\UserIdentity;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 
 class LoginController extends Controller
@@ -33,6 +35,16 @@ class LoginController extends Controller
 
     public function actionLogin()
     {
-        var_dump(Yii::$app->request->post());
+        $user = Yii::$app->request->post('user');
+        $pwd = Yii::$app->request->post('pwd');
+        $indentity = new UserIdentity(array(), $user);
+        if (
+            !$indentity::validatePassword($user, $pwd)
+        ) {
+            $this->redirect(Url::to(['index']));
+            Yii::$app->end();
+        }
+        Yii::$app->user->login($indentity);
+        $this->redirect(['site/index']);
     }
 }
