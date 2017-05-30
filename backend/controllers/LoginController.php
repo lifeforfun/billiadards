@@ -47,4 +47,10 @@ class LoginController extends Controller
         Yii::$app->user->login($indentity);
         $this->redirect(['site/index']);
     }
+
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+        return $this->goHome();
+    }
 }
