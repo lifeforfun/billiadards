@@ -1,8 +1,10 @@
 <?php
 namespace backend\controllers;
 
+use backend\assets\AppAsset;
 use Yii;
 use backend\lib\Controller;
+
 /**
  * Site controller
  */
@@ -28,6 +30,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->view->registerJsFile('@web/dist/test.js', ['depends' => AppAsset::className()]);
         return $this->render('index');
     }
 
@@ -52,15 +55,4 @@ class SiteController extends Controller
         }
     }
 
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
 }

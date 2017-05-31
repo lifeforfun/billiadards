@@ -11,8 +11,11 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller as CController;
 
+
 class Controller extends CController
 {
+    use \common\block\RegisterAssetsTrait;
+
     public function behaviors()
     {
         return [

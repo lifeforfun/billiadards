@@ -12,7 +12,7 @@ use yii\helpers\Html;
     <title>登录</title>
 </head>
 <body>
-    <?= Html::beginForm(['login/login'], 'post') ?>
+    <?= Html::beginForm(['login/index'], 'post') ?>
         <table>
             <tr>
                 <td>用户名：</td>

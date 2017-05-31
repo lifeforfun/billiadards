@@ -11,7 +11,6 @@ use Yii;
 use backend\lib\Controller;
 use backend\lib\UserIdentity;
 use yii\filters\VerbFilter;
-use yii\helpers\Url;
 
 
 class LoginController extends Controller
@@ -30,22 +29,24 @@ class LoginController extends Controller
 
     public function actionIndex()
     {
-        return $this->renderPartial('index');
-    }
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
 
-    public function actionLogin()
-    {
+        if (!Yii::$app->request->isPost) {
+            return $this->renderPartial('index');
+        }
+
         $user = Yii::$app->request->post('user');
         $pwd = Yii::$app->request->post('pwd');
         $indentity = new UserIdentity(array(), $user);
         if (
-            !$indentity::validatePassword($user, $pwd)
+        !$indentity::validatePassword($user, $pwd)
         ) {
-            $this->redirect(Url::to(['index']));
-            Yii::$app->end();
+            return $this->goBack();
         }
         Yii::$app->user->login($indentity);
-        $this->redirect(['site/index']);
+        return $this->goHome();
     }
 
     public function actionLogout()
