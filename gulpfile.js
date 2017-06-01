@@ -2,28 +2,44 @@ var gulp = require('gulp'),
     path = require('path'),
     fs = require('fs'),
     webpack = require('webpack'),
+    webpackStream = require('webpack-stream'),
+    UglifyJSPlugin = require('uglifyjs-webpack-plugin'),
     srcPath = path.join(__dirname, 'src')
 
 
 
-gulp.task('default', ['build-backend'], cb => cb())
-
-gulp.task('build-backend', cb => {
-
+gulp.add('default', ['build-backend'], function (cb) {
+    cb()
 })
 
-gulp.task('watch-backend', cb => {
+gulp.add('build-backend', function (cb) {
+    return doBuild('backend')
+})
 
+gulp.add('watch-backend', function (cb) {
+    return doDev('backend')
 })
 
 
-function doBuild(platform, cb) {
-    deleteDir(path.join(__dirname, 'build', platform))
-
+function doBuild(platform) {
+    return webpackStream(getConfig(platform, {
+        devtool:'source-map',
+        plugins:[
+            new UglifyJSPlugin({
+                sourceMap:true
+            })
+        ]
+    }, false), webpack)
+        .pipe(gulp.dest('./'+platform+'/web/dist/'))
 }
 
-function doDev(platform, cb) {
-
+function doDev(platform) {
+    var config = getConfig(platform, {
+        watch: true,
+        devtool:'eval-source-map',
+    }, true)
+    return webpackStream(config, webpack)
+        .pipe(gulp.dest('./'+platform+'/web/dist/'))
 }
 
 
@@ -46,11 +62,13 @@ function deleteDir(dirpath)
 }
 
 function getConfig(platform, opt, DEBUG) {
+    var distPath = path.join(__dirname, platform, 'web', 'dist')
+    deleteDir(distPath)
     var config = {
         context: srcPath,
-        entry: platform+'/main',
+        entry: getEntry(path.join(srcPath, platform), './'+platform, ''),
         output: {
-            path: './build/'+platform,
+            path: distPath,
             filename: '[name].js',
             chunkFilename: '[name].js'
         },
@@ -60,33 +78,48 @@ function getConfig(platform, opt, DEBUG) {
             extensions: [ '.js']
         },
         module:{
-            loaders:[
+            rules:[
                 {
                     test: /\.js$/,
-                    loader: 'babel-loader!eslint-loader',
+                    use:[
+                        'babel-loader',
+                        'eslint-loader',
+                    ],
                     include: srcPath
                 },
                 {
                     test:/\.html$/,
-                    loader:'raw!html-minify'
+                    use:[
+                        'raw-loader',
+                        'html-minify-loader'
+                    ],
                 },
                 {
                     test:/\.css$/i,
-                    loader:DEBUG ?
-                        'vue-style-loader!css-loader?sourceMap' :
-                        'vue-style-loader!css-loader!csso-loader'
+                    use:[
+                        'style-loader',
+                        {
+                            loader:'css-loader',
+                            options:{
+                                sourceMap:true
+                            }
+                        }
+                    ]
                 },
                 {
                     test:/\.(jpg|jpeg|gif|png)$/i,
-                    loader:'file?name=img/[name]-[hash].[ext]'
-                },
-                {
-                    test:/\.vue$/i,
-                    loader:'vue-loader'
+                    use:[
+                        {
+                            loader:'file-loader',
+                            options:{
+                                name:'img/[name]-[hash:6].[ext]'
+                            }
+                        }
+                    ],
                 },
                 {
                     test:/\.tmpl$/,
-                    loader:'tmodjs-loader'
+                    use:['tmodjs-loader'],
                 }
             ],
         },
@@ -98,11 +131,8 @@ function getConfig(platform, opt, DEBUG) {
                         return true
                 }
             }),
-            new webpack.DefinePlugin({
-                SITE:JSON.stringify(site),
-                DEBUG:DEBUG,
-                PLATFORM:JSON.stringify(platform)
-            })
+            // new webpack.DefinePlugin({
+            // })
         ]
     };
     return opt?merge(config,opt):config;
@@ -122,4 +152,24 @@ function merge(a,b) {
     }else {
         return b;
     }
+}
+
+function getEntry(dir, pathPrefix, entryPrefix) {
+    pathPrefix = pathPrefix && pathPrefix!=='/'? pathPrefix.replace(/\/$/, '')+'/' : ''
+    entryPrefix = entryPrefix && entryPrefix!=='/' ? entryPrefix.replace(/\/$/, '')+'/' : ''
+    var handle = fs.readdirSync(dir),
+        tmp = {};
+    handle.forEach(function(filename,index){
+        var stats = fs.statSync(path.join(dir,filename));
+        if(stats.isDirectory()) {
+            //合并entry
+            tmp = merge(getEntry(path.join(dir,filename), pathPrefix+filename, entryPrefix+filename), tmp);
+        } else if(stats.isFile() && /\.js$/.test(filename)){
+            if(/^_/.test(filename))
+                return;
+            filename = filename.substr(0,filename.length-3);
+            tmp[entryPrefix+filename] = pathPrefix+filename;
+        }
+    });
+    return tmp;
 }

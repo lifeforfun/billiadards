@@ -4,7 +4,8 @@
   "description": "台球吧",
   "main": " ",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp",
+    "dev": "gulp watch-backend"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +18,8 @@
     "eslint": "^3.19.0",
     "eslint-loader": "^1.7.1",
     "gulp": "^3.9.1",
-    "webpack": "^2.6.1"
+    "uglifyjs-webpack-plugin": "^0.4.3",
+    "webpack": "^2.6.1",
+    "webpack-stream": "^3.2.0"
   }
 }

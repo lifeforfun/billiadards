@@ -1,0 +1,45 @@
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP Fatal error:  Class 'api\assets\AppAsset' not found in D:\Docs\workspace\yii2\api\views\layouts\main.php on line 13
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP Stack trace:
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   1. {main}() D:\Docs\workspace\yii2\api\web\index.php:0
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   2. yii\base\Application->run() D:\Docs\workspace\yii2\api\web\index.php:17
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   3. yii\web\Application->handleRequest() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Application.php:380
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   4. yii\base\Module->runAction() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\web\Application.php:102
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   5. yii\base\Controller->runAction() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Module.php:523
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   6. yii\base\InlineAction->runWithParams() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:156
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   7. call_user_func_array:{D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57}() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   8. frontend\controllers\SiteController->actionIndex() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP   9. yii\base\Controller->render() D:\Docs\workspace\yii2\frontend\controllers\SiteController.php:75
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP  10. yii\base\Controller->renderContent() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:382
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP  11. yii\base\View->renderFile() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:396
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP  12. yii\base\View->renderPhpFile() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\View.php:250
+[01-Jun-2017 15:20:06 Asia/Harbin] PHP  13. require() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\View.php:328
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP Fatal error:  Class 'api\assets\AppAsset' not found in D:\Docs\workspace\yii2\api\views\layouts\main.php on line 13
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP Stack trace:
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   1. {main}() D:\Docs\workspace\yii2\api\web\index.php:0
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   2. yii\base\Application->run() D:\Docs\workspace\yii2\api\web\index.php:17
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   3. yii\web\Application->handleRequest($request = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Application.php:380
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   4. yii\base\Module->runAction($route = *uninitialized*, $params = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\web\Application.php:102
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   5. yii\base\Controller->runAction($id = *uninitialized*, $params = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Module.php:523
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   6. yii\base\InlineAction->runWithParams($params = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:156
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   7. call_user_func_array:{D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57}(*uninitialized*, *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   8. frontend\controllers\SiteController->actionIndex() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP   9. yii\base\Controller->render($view = *uninitialized*, $params = *uninitialized*) D:\Docs\workspace\yii2\frontend\controllers\SiteController.php:75
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP  10. yii\base\Controller->renderContent($content = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:382
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP  11. yii\base\View->renderFile($viewFile = *uninitialized*, $params = *uninitialized*, $context = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:396
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP  12. yii\base\View->renderPhpFile($_file_ = *uninitialized*, $_params_ = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\View.php:250
+[01-Jun-2017 15:28:03 Asia/Harbin] PHP  13. require() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\View.php:328
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP Fatal error:  Class 'api\assets\AppAsset' not found in D:\Docs\workspace\yii2\api\views\layouts\main.php on line 13
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP Stack trace:
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   1. {main}() D:\Docs\workspace\yii2\api\web\index.php:0
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   2. yii\base\Application->run() D:\Docs\workspace\yii2\api\web\index.php:17
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   3. yii\web\Application->handleRequest($request = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Application.php:380
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   4. yii\base\Module->runAction($route = *uninitialized*, $params = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\web\Application.php:102
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   5. yii\base\Controller->runAction($id = *uninitialized*, $params = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Module.php:523
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   6. yii\base\InlineAction->runWithParams($params = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:156
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   7. call_user_func_array:{D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57}(*uninitialized*, *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   8. frontend\controllers\SiteController->actionIndex() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\InlineAction.php:57
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP   9. yii\base\Controller->render($view = *uninitialized*, $params = *uninitialized*) D:\Docs\workspace\yii2\frontend\controllers\SiteController.php:75
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP  10. yii\base\Controller->renderContent($content = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:382
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP  11. yii\base\View->renderFile($viewFile = *uninitialized*, $params = *uninitialized*, $context = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\Controller.php:396
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP  12. yii\base\View->renderPhpFile($_file_ = *uninitialized*, $_params_ = *uninitialized*) D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\View.php:250
+[01-Jun-2017 15:28:17 Asia/Harbin] PHP  13. require() D:\Docs\workspace\yii2\vendor\yiisoft\yii2\base\View.php:328
