@@ -10,21 +10,13 @@ namespace backend\controllers;
 use Yii;
 use backend\lib\Controller;
 use backend\lib\UserIdentity;
-use yii\filters\VerbFilter;
 
 
 class LoginController extends Controller
 {
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'login' => ['post']
-                ]
-            ]
-        ];
+        return [];
     }
 
     public function actionIndex()
