@@ -30,7 +30,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->view->registerJsFile('@web/dist/test.js', ['depends' => AppAsset::className()]);
         return $this->render('index');
     }
 

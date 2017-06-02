@@ -18,17 +18,11 @@
   },
   "extends": "eslint:recommended",
   "globals":{
-    // site_uri:true,
-    // base_uri:true,
+    "base_uri":true,
     "$":true,
     "jQuery":true,
-    "QN":true,
-    "workbench":true,
-    "TOP":true,
     "createUrl":true,
-    "SITE":true,
     "DEBUG":true,
-    "PLATFORM":true,
     "layer":true
   }
 }

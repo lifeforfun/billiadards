@@ -21,5 +21,9 @@
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.6.1",
     "webpack-stream": "^3.2.0"
+  },
+  "dependencies": {
+    "bootstrap-datepicker-extended": "^0.1.1",
+    "layer-dialog": "^2.1.0"
   }
 }

@@ -11,6 +11,7 @@ var gulp = require('gulp'),
 gulp.add('default', ['build-backend'], function (cb) {
     cb()
 })
+    .on('error', e => console.log(e))
 
 gulp.add('build-backend', function (cb) {
     return doBuild('backend')
@@ -30,6 +31,9 @@ function doBuild(platform) {
             })
         ]
     }, false), webpack)
+        .on('error', function () {
+            this.emit('end')
+        })
         .pipe(gulp.dest('./'+platform+'/web/dist/'))
 }
 
@@ -39,6 +43,9 @@ function doDev(platform) {
         devtool:'eval-source-map',
     }, true)
     return webpackStream(config, webpack)
+        .on('error', function () {
+            this.emit('end')
+        })
         .pipe(gulp.dest('./'+platform+'/web/dist/'))
 }
 
@@ -73,14 +80,19 @@ function getConfig(platform, opt, DEBUG) {
             chunkFilename: '[name].js'
         },
         resolve: {
+            modules:[srcPath, "node_modules"],
             alias:{
             },
             extensions: [ '.js']
+        },
+        externals:{
+            jquery:"jQuery"
         },
         module:{
             rules:[
                 {
                     test: /\.js$/,
+                    enforce:"pre",
                     use:[
                         'babel-loader',
                         'eslint-loader',

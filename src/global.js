@@ -1,3 +1,2 @@
-/**
- * Created by Administrator on 2017/5/31.
- */
+require('bootstrap-datepicker-extended')
+window.layer = require('layer-dialog')

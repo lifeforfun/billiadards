@@ -64,7 +64,9 @@ class Http {
             CURLOPT_USERPWD => $client->getAuth(),
 
             CURLOPT_URL => $uri,
-            CURLOPT_CUSTOMREQUEST => ('UPLOAD' == $method) ? 'POST' : $method
+            CURLOPT_CUSTOMREQUEST => ('UPLOAD' == $method) ? 'POST' : $method,
+//            CURLOPT_SSL_VERIFYHOST => false,
+//            CURLOPT_SSL_VERIFYPEER => false,
         );
 
         if (!empty($body)) {

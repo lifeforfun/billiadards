@@ -13,6 +13,7 @@ class NewsController extends Controller
 {
     public function actionIndex()
     {
+        $this->registerJsFile('news/index.js');
         return $this->render('index');
     }
 }
