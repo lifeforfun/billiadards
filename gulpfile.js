@@ -40,6 +40,7 @@ function doBuild(platform) {
 function doDev(platform) {
     var config = getConfig(platform, {
         watch: true,
+        cache:false,
         devtool:'eval-source-map',
     }, true)
     return webpackStream(config, webpack)
@@ -77,7 +78,8 @@ function getConfig(platform, opt, DEBUG) {
         output: {
             path: distPath,
             filename: '[name].js',
-            chunkFilename: '[name].js'
+            chunkFilename: '[name].js',
+            publicPath:'./dist/'
         },
         resolve: {
             modules:[srcPath, "node_modules"],
@@ -93,11 +95,13 @@ function getConfig(platform, opt, DEBUG) {
                 {
                     test: /\.js$/,
                     enforce:"pre",
-                    use:[
-                        'babel-loader',
-                        'eslint-loader',
-                    ],
+                    use:'eslint-loader',
                     include: srcPath
+                },
+                {
+                    test:/\.js$/,
+                    use:'babel-loader',
+                    include:srcPath
                 },
                 {
                     test:/\.html$/,
@@ -113,7 +117,7 @@ function getConfig(platform, opt, DEBUG) {
                         {
                             loader:'css-loader',
                             options:{
-                                sourceMap:true
+                                sourceMap:true,
                             }
                         }
                     ]

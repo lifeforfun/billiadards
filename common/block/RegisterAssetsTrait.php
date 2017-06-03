@@ -36,7 +36,8 @@ trait RegisterAssetsTrait {
                   if (typeof query!=='object') {
                       query = {}
                   }
-                  var url = base_uri+'/index.php/'+route.replace(/^\//, '')+'?'
+                  var url = base_uri+'/index.php?'
+                  query.r = route
                   for(var i in query) {
                       url += i+'='+encodeURIComponent(query[i])+'&'
                   }

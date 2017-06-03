@@ -15,6 +15,7 @@ use yii\web\Controller as CController;
 class Controller extends CController
 {
     use \common\block\RegisterAssetsTrait;
+    use \common\block\RequestTrait;
 
     public function behaviors()
     {

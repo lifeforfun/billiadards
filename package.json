@@ -15,15 +15,17 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-runtime": "^6.23.0",
+    "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
     "eslint-loader": "^1.7.1",
+    "file-loader": "^0.11.1",
     "gulp": "^3.9.1",
+    "style-loader": "^0.18.1",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.6.1",
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
-    "bootstrap-datepicker-extended": "^0.1.1",
-    "layer-dialog": "^2.1.0"
+    "bootstrap-datepicker": "^1.6.4"
   }
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 31, 2017 at 01:53 PM
+-- Generation Time: Jun 03, 2017 at 11:51 AM
 -- Server version: 10.0.15-MariaDB
 -- PHP Version: 5.4.45
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `news` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(60) COLLATE utf8_unicode_ci NOT NULL COMMENT '文章标题',
-  `dateline` datetime NOT NULL COMMENT '发布日期',
+  `dateline` date NOT NULL COMMENT '发布日期',
   `tag` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '标签列表:|关键词1|关键词2|...|',
   `cover` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '封面图url',
   `content` text COLLATE utf8_unicode_ci NOT NULL COMMENT '文章内容',
