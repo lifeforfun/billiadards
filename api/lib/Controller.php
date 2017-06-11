@@ -12,11 +12,17 @@ use Yii;
 
 class Controller extends CController
 {
+    use \common\block\ApiRequestTrait;
 
     public function init()
     {
         parent::init();
-        require(Yii::getAlias('@jmessage/autoload.php'));
+
+        // init api client configuration
+        require(Yii::getAlias('@emchat/autoload.php'));
+        $client = self::getClient();
+        $client->org = Yii::$app->params['emchat']['org'];
+        $client->app = Yii::$app->params['emchat']['app'];
     }
 
     public function behaviors()

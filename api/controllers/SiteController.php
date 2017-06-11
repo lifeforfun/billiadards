@@ -8,13 +8,12 @@
 namespace api\controllers;
 
 use Yii;
-use JMessage\JMessage;
-use JMessage\IM\User;
 
 class SiteController extends \api\lib\Controller
 {
     public function actionIndex()
     {
+        return 'test';
     }
 
     public function actionLogin()
@@ -30,9 +29,11 @@ class SiteController extends \api\lib\Controller
     public function actionRegister()
     {
 
-        $client = new JMessage(Yii::$app->params['jiguang']['appkey'], Yii::$app->params['jiguang']['secret']);
-        $user = new User($client);
-
+        $res = new \tokenRequest();
+        $res->setClientId(Yii::$app->params['emchat']['client_id']);
+        $res->setClientSecret(Yii::$app->params['emchat']['client_secret']);
+        $res->setGrantType();
+        $resp = self::execute($res);
         return 'register';
     }
 }

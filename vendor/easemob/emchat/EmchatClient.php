@@ -16,7 +16,7 @@ class EmchatClient
 
     private static $instance;
 
-    public function getInstance()
+    public static function getInstance()
     {
         if (isset(self::$instance)) {
             return self::$instance;
@@ -28,19 +28,37 @@ class EmchatClient
      * @param ApiRequest $res
      * @param string $token
      */
-    public function execute($res, $token)
+    public function execute($res, $token=null)
     {
-        $res->setHeader('Authorization', 'Bearer '.$token);
+        if (isset($token)) {
+            $res->setHeader('Authorization', 'Bearer '.$token);
+        }
         $header = $res->getHeader();
         $body = $res->getBody();
 
+        switch ($res->getHttpMethod()) {
+            case $res::HTTP_METHOD_GET:
+                $setting = array(
+                    CURLOPT_HTTPGET => true,
+                );
+                break;
+            case $res::HTTP_METHOD_POST:
+                $setting = array(
+                    CURLOPT_POST => true,
+                );
+                break;
+            default:
+                $setting = array(
+                    CURLOPT_CUSTOMREQUEST => $res->getHttpMethod()
+                );
+                break;
+        }
+
         $resp = $this->curl(
-            $res->getUrl($this->gateway.$this->org.'/'.$this->app) .'?'.http_build_url($res->getQuery()),
+            $res->getUrl($this->gateway.$this->org.'/'.$this->app) .'?'.http_build_query($res->getQuery()),
             $header,
             $body,
-            array(
-                CURLOPT_CUSTOMREQUEST => $res->getHttpMethod()
-            )
+            $setting
         );
 
         return $resp['resp'];
@@ -64,7 +82,7 @@ class EmchatClient
                 $headers[] = $k.':'.$v;
             }
         }
-        if ($setting[CURLOPT_CUSTOMREQUEST]==='POST' && !empty($body)) {
+        if (isset($setting[CURLOPT_POST]) && $setting[CURLOPT_POST] && !empty($body)) {
             $post = array();
             $postFile = false;
             foreach ($body as $k => $v) {
@@ -87,6 +105,7 @@ class EmchatClient
         curl_setopt_array($ch, array_merge(array(
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_MAXREDIRS => 3,
             //上传文件相关设置
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_SSL_VERIFYHOST => false,// 对认证证书来源的检查
