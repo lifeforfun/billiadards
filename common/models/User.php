@@ -52,4 +52,9 @@ class User extends \yii\db\ActiveRecord
             'last_login' => '最近登录时间',
         ];
     }
+
+    public function encrptPassword($pwd)
+    {
+        return md5($pwd);
+    }
 }

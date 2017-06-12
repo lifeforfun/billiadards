@@ -5,6 +5,9 @@
  * Date: 2017/6/9
  * Time: 9:29
  */
+
+use yii\helpers\ArrayHelper;
+
 class EmchatClient
 {
     // 企业id
@@ -61,7 +64,7 @@ class EmchatClient
             $setting
         );
 
-        return $resp['resp'];
+        return json_decode($resp['resp']);
     }
 
     /**
@@ -69,6 +72,8 @@ class EmchatClient
      * @param array $header
      * @param array $body
      * @param array $setting
+     * @return
+     * $resp => {"error":"organization_application_not_found","timestamp":1497233122167,"duration":0,"exception":"org.apache.usergrid.rest.exceptions.OrganizationApplicationNotFoundException","error_description":"Could not find application for 1182170609115040/billiardss from URI: 1182170609115040/billiardss/token"}
      */
     protected function curl($url, $header, $body, $setting=array())
     {
@@ -96,19 +101,19 @@ class EmchatClient
             if ($postFile) {
                 $setting[CURLOPT_POSTFIELDS] = $post;
             } else {
-                $setting[CURLOPT_POSTFIELDS] = http_build_query($post);
+                $setting[CURLOPT_POSTFIELDS] = json_encode($post);
             }
         }
 
 
         $ch = curl_init($url);
-        curl_setopt_array($ch, array_merge(array(
+        curl_setopt_array($ch, ArrayHelper::merge(array(
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_MAXREDIRS => 3,
             //上传文件相关设置
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_SSL_VERIFYHOST => false,// 对认证证书来源的检查
+            CURLOPT_SSL_VERIFYHOST => 0,// 对认证证书来源的检查
             CURLOPT_SSL_VERIFYPEER => false,// 从证书中检查SSL加密算
         ), $setting));
 

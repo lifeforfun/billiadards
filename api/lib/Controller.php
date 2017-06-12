@@ -12,6 +12,7 @@ use Yii;
 
 class Controller extends CController
 {
+    use \common\block\RequestTrait;
     use \common\block\ApiRequestTrait;
 
     public function init()
