@@ -53,7 +53,7 @@ class User extends \yii\db\ActiveRecord
         ];
     }
 
-    public function encrptPassword($pwd)
+    public static function encrptPassword($pwd)
     {
         return md5($pwd);
     }
