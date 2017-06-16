@@ -62,6 +62,16 @@ class News extends \yii\db\ActiveRecord
         }
     }
 
+    public function getTag()
+    {
+        return explode('|', trim($this->tag, '|'));
+    }
+
+    public function setTag(array $tags)
+    {
+        $this->tag = empty($tags) ? '' : ('|' . implode('|', $tags) . '|');
+    }
+
     public function upload()
     {
         if ($this->validate()) {
