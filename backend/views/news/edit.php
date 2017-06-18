@@ -30,6 +30,6 @@ use yii\widgets\ActiveForm;
     </p>
     <div class="form-group">
         <label for="tag">标签</label>
-        <input type="text" class="form-control" id="tag" <?=$model->getTag()?> />
+        <input type="text" class="form-control" id="tag" <?=implode(',', $model->getTag())?> />
     </div>
 <?php ActiveForm::end() ?>
