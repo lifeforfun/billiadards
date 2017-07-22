@@ -28,9 +28,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `login_session` (
   `uid` int(11) NOT NULL,
-  `session` varchar(80) COLLATE utf32_unicode_ci NOT NULL,
+  `session` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   `expires` datetime NOT NULL COMMENT '过期时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='用户登录session';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户登录session';
 
 -- --------------------------------------------------------
 
