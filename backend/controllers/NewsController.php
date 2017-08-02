@@ -81,5 +81,8 @@ class NewsController extends Controller
             ]);
         }
 
+        // 保存POST
+        $model = new News();
+        $model->setAttributes(self::getPost());
     }
 }
