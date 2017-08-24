@@ -16,7 +16,7 @@ class LoginSession extends \yii\db\ActiveRecord
     /**
      * session过期时间(秒)
      */
-    const SESSION_EXPIRES = 10*86400;
+    const SESSION_EXPIRES = 864e3;
 
     /**
      * @inheritdoc

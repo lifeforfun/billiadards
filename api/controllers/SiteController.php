@@ -22,7 +22,7 @@ class SiteController extends \api\lib\Controller
 
     /**
      * 登录
-     * 1)当传入username参数时以用户名/密码登录
+     * 1)当传入username参数时以用户名(username)/密码(password)登录
      * 2)否则以session登录，需要传入session/uid参数
      * @var $username 用户名
      * @var $password 密码
@@ -119,6 +119,8 @@ class SiteController extends \api\lib\Controller
     /**
      * @desc 注册用户
      *
+     * @var $username
+     * @var $password
      * @return array
      */
     public function actionRegister()
@@ -165,7 +167,10 @@ class SiteController extends \api\lib\Controller
             !preg_match('/^1\d{10}$/', $uname)) {
             throw new Exception('用户名必须为11位手机号码');
         }
-        if ((new User)->hasOne(User::className(), ['uname' => $uname])) {
+        if ((new Query())
+            ->from('user')
+            ->where(['uname' => $uname])
+            ->exists()) {
             throw new Exception('用户名已存在');
         }
         if ($pwd==='') {

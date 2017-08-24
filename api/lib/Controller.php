@@ -19,6 +19,9 @@ class Controller extends CController
     {
         parent::init();
 
+        // 关闭csrf
+        $this->enableCsrfValidation = false;
+
         // init api client configuration
         require(Yii::getAlias('@emchat/autoload.php'));
         $client = self::getClient();

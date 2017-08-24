@@ -221,7 +221,7 @@ Upgrade from Yii 2.0.0
   adding the following line in the `require` section:
 
   ```json
-  "bower-asset/bootstrap": "3.2.*",
+  assets: "3.2.*",
   ```
 
 Upgrade from Yii 2.0 RC
