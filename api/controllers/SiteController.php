@@ -155,7 +155,12 @@ class SiteController extends \api\lib\Controller
 
         $transaction->commit();
 
-        return $this->asJson($db->attributes);
+        $data = $db->attributes;
+        unset($data['pwd']);
+        return $this->asJson([
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     protected function checkPostRegister()
