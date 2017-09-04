@@ -31,7 +31,7 @@ class NewsController extends \api\lib\Controller
 
         $query->filterWhere([
             'status' => 1,
-            ['like', 'title', $q],
+            'title' => ['like', 'title', $q],
         ]);
 
         if ($tags!=='') {
