@@ -31,9 +31,7 @@ class NewsController extends \api\lib\Controller
 
         $query
             ->where(['status' => 1])
-            ->andFilterWhere([
-                ['like', 'title', $q]
-            ]);
+            ->andFilterWhere(['like', 'title', $q]);
 
         if ($tags!=='') {
             $tags = explode('|', $tags);
