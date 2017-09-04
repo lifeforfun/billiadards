@@ -29,10 +29,11 @@ class NewsController extends \api\lib\Controller
             ->from('news')
             ->orderBy(['dateline' => SORT_DESC]);
 
-        $query->filterWhere([
-            'status' => 1,
-            'title' => ['like', 'title', $q],
-        ]);
+        $query
+            ->where(['status' => 1])
+            ->filterWhere([
+                ['like', 'title', $q]
+            ]);
 
         if ($tags!=='') {
             $tags = explode('|', $tags);
