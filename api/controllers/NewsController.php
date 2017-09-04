@@ -31,7 +31,7 @@ class NewsController extends \api\lib\Controller
 
         $query
             ->where(['status' => 1])
-            ->filterWhere([
+            ->andFilterWhere([
                 ['like', 'title', $q]
             ]);
 
