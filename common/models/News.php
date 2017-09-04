@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "news".
  *
  * @property string $id
+ * @property integer $status
  * @property string $title
  * @property string $dateline
  * @property string $tag
@@ -32,6 +33,7 @@ class News extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['status'], 'integer'],
             [['title', 'dateline', 'content'], 'required'],
             [['dateline'], 'safe'],
             [['vid'], 'integer'],
@@ -49,6 +51,7 @@ class News extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'status' => '审核状态',
             'title' => '文章标题',
             'dateline' => '发布日期',
             'tag' => '标签列表:|关键词1|关键词2|...|',
@@ -58,4 +61,5 @@ class News extends \yii\db\ActiveRecord
             'content' => '文章内容',
         ];
     }
+
 }

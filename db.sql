@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2017 年 09 月 04 日 10:49
+-- 生成日期: 2017 年 09 月 04 日 10:59
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.4.45
 
@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `login_session` (
 
 CREATE TABLE IF NOT EXISTS `news` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '审核状态:0未审核1已审核',
   `title` varchar(60) COLLATE utf8_unicode_ci NOT NULL COMMENT '文章标题',
   `dateline` date NOT NULL COMMENT '发布日期',
   `tag` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '标签列表:|关键词1|关键词2|...|',
@@ -50,7 +51,8 @@ CREATE TABLE IF NOT EXISTS `news` (
   `pids` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '上传图片文件id列表，英文逗号分隔',
   `content` text COLLATE utf8_unicode_ci NOT NULL COMMENT '文章内容',
   PRIMARY KEY (`id`),
-  KEY `title` (`title`,`tag`,`dateline`)
+  KEY `title` (`title`,`tag`,`dateline`),
+  KEY `status` (`status`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='文章列表' AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------

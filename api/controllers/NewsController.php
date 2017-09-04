@@ -2,9 +2,9 @@
 
 namespace api\controllers;
 
-
-
+use common\block\ThumbTrait;
 use common\models\News;
+use common\models\UploadFile;
 use yii\db\Query;
 
 class NewsController extends \api\lib\Controller
@@ -30,6 +30,7 @@ class NewsController extends \api\lib\Controller
             ->orderBy(['dateline' => SORT_DESC]);
 
         $query->filterWhere([
+            'status' => 1,
             'q' => $q,
         ]);
 
@@ -54,7 +55,7 @@ class NewsController extends \api\lib\Controller
 
         foreach ($list as &$item) {
             if ($item['cover']) {
-                $item['cover'] = News::getCover($item['cover'], 200);
+                $item['cover'] = ThumbTrait::getThumb($item['cover'], 'small');
             }
         }
         unset($item);
@@ -68,4 +69,56 @@ class NewsController extends \api\lib\Controller
         ]);
     }
 
+    /**
+     * @var integer $id
+     * @return array
+     */
+    public function actionDetail()
+    {
+        $id = self::getPost('id');
+
+        $data = array(
+            'video' => null,
+            'pic' => []
+        );
+        $model = News::findOne(['id' => $id, 'status' => 1]);
+        if (!$model) {
+            return self::asJson([
+                'status' => false,
+                'msg' => '信息不存在或未通过审核'
+            ]);
+        }
+        if ($model->vid) {
+            $video = UploadFile::findOne(['id' => $model->vid]);
+            $data['video'] = $video->url;
+        }
+        if ($model->pids) {
+            $pics = (new Query())
+                ->select('url')
+                ->from('upload_file')
+                ->where(['in', 'id', explode(',', $model->pids)])
+                ->all();
+            foreach ($pics as $pic) {
+                $data['pic'][] = [
+                    'thumb' => ThumbTrait::getThumb($pic['url'], 'mid'),
+                    'url' => $pic['url'],
+                ];
+            }
+        }
+
+        $data = array_merge($data, $model->getAttributes(['id', 'title', 'dateline', 'tag', 'content']));
+
+        return self::asJson([
+            'status' => true,
+            'data' => $data,
+        ]);
+    }
+
+    /**
+     *
+     */
+    public function actionCreate()
+    {
+
+    }
 }
