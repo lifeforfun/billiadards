@@ -31,7 +31,7 @@ class NewsController extends \api\lib\Controller
 
         $query->filterWhere([
             'status' => 1,
-            'q' => $q,
+            'title' => $q,
         ]);
 
         if ($tags!=='') {
