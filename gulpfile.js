@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+    gutil = require('gulp-util'),
     path = require('path'),
     fs = require('fs'),
     webpack = require('webpack'),
@@ -7,58 +8,56 @@ var gulp = require('gulp'),
     srcPath = path.join(__dirname, 'src')
 
 
-
 gulp.add('default', ['build-backend'], function (cb) {
     cb()
 })
     .on('error', e => console.log(e))
 
-gulp.add('build-backend', function (cb) {
+gulp.add('build-backend', function () {
     return doBuild('backend')
 })
 
-gulp.add('watch-backend', function (cb) {
+gulp.add('watch-backend', function () {
     return doDev('backend')
 })
 
 
 function doBuild(platform) {
     return webpackStream(getConfig(platform, {
-        devtool:'source-map',
-        plugins:[
+        devtool: 'source-map',
+        plugins: [
             new UglifyJSPlugin({
-                sourceMap:true
+                sourceMap: true
             })
         ]
     }, false), webpack)
         .on('error', function () {
             this.emit('end')
         })
-        .pipe(gulp.dest('./'+platform+'/web/dist/'))
+        .pipe(gulp.dest('./' + platform + '/web/dist/'))
 }
 
 function doDev(platform) {
     var config = getConfig(platform, {
         watch: true,
-        cache:false,
-        devtool:'eval-source-map',
+        devtool: 'eval-source-map',
     }, true)
     return webpackStream(config, webpack)
-        .on('error', function () {
+        .on('error', function (err) {
+            gutil.log('WEBPACK ERROR', err)
             this.emit('end')
         })
-        .pipe(gulp.dest('./'+platform+'/web/dist/'))
+        .pipe(gulp.dest(platform + '/web/dist'))
 }
 
 
 //递归删除目录
-function deleteDir(dirpath)
-{
+function deleteDir(dirpath) {
     if (!fs.existsSync(dirpath)) {
         return;
     }
     var files = fs.readdirSync(dirpath);
-    files.forEach(function(file){
+    files.forEach(function (file) {
         var filepath = path.join(dirpath, file);
         if (fs.statSync(filepath).isDirectory()) {
             deleteDir(filepath);
@@ -74,68 +73,80 @@ function getConfig(platform, opt, DEBUG) {
     deleteDir(distPath)
     var config = {
         context: srcPath,
-        entry: getEntry(path.join(srcPath, platform), './'+platform, ''),
+        entry: getEntry(path.join(srcPath, platform), './' + platform, ''),
         output: {
             path: distPath,
             filename: '[name].js',
             chunkFilename: '[name].js',
-            publicPath:'./dist/'
+            publicPath: './dist/'
         },
         resolve: {
-            modules:[srcPath, "node_modules"],
-            alias:{
-            },
-            extensions: [ '.js']
+            modules: [srcPath, "node_modules"],
+            alias: {},
+            extensions: ['.js']
         },
-        externals:{
-            jquery:"jQuery"
+        externals: {
+            jquery: "jQuery"
         },
-        module:{
-            rules:[
+        module: {
+            rules: [
                 {
                     test: /\.js$/,
-                    enforce:"pre",
-                    use:'eslint-loader',
+                    enforce: "pre",
+                    use: 'eslint-loader',
                     include: srcPath
                 },
                 {
-                    test:/\.js$/,
-                    use:'babel-loader',
-                    include:srcPath
+                    test: /\.js$/,
+                    use: 'babel-loader',
+                    include: srcPath
                 },
                 {
-                    test:/\.html$/,
-                    use:[
+                    test: /\.html$/,
+                    use: [
                         'raw-loader',
                         'html-minify-loader'
                     ],
                 },
                 {
-                    test:/\.css$/i,
-                    use:[
+                    test: /\.css$/i,
+                    use: [
                         'style-loader',
                         {
-                            loader:'css-loader',
-                            options:{
-                                sourceMap:true,
+                            loader: 'css-loader',
+                            options: {
+                                sourceMap: true,
                             }
                         }
                     ]
                 },
                 {
-                    test:/\.(jpg|jpeg|gif|png)$/i,
-                    use:[
+                    test: /\.less/i,
+                    use: [
+                        'style-loader',
                         {
-                            loader:'file-loader',
-                            options:{
-                                name:'img/[name]-[hash:6].[ext]'
+                            loader: 'css-loader',
+                            options: {
+                                sourceMap: true,
+                            }
+                        },
+                        'less-loader',
+                    ]
+                },
+                {
+                    test: /\.(jpg|jpeg|gif|png)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: 'img/[name]-[hash:6].[ext]'
                             }
                         }
                     ],
                 },
                 {
-                    test:/\.tmpl$/,
-                    use:['tmodjs-loader'],
+                    test: /\.tmpl$/,
+                    use: ['tmodjs-loader'],
                 }
             ],
         },
@@ -151,40 +162,40 @@ function getConfig(platform, opt, DEBUG) {
             // })
         ]
     };
-    return opt?merge(config,opt):config;
+    return opt ? merge(config, opt) : config;
 }
 
-function merge(a,b) {
-    if(a instanceof Array) {
+function merge(a, b) {
+    if (a instanceof Array) {
         return a.concat(b);
-    }else if(typeof a==='object') {
-        for(var i in b) {
-            if(!a[i])
+    } else if (typeof a === 'object') {
+        for (var i in b) {
+            if (!a[i])
                 a[i] = b[i];
             else
-                a[i] = merge(a[i],b[i]);
+                a[i] = merge(a[i], b[i]);
         }
         return a;
-    }else {
+    } else {
         return b;
     }
 }
 
 function getEntry(dir, pathPrefix, entryPrefix) {
-    pathPrefix = pathPrefix && pathPrefix!=='/'? pathPrefix.replace(/\/$/, '')+'/' : ''
-    entryPrefix = entryPrefix && entryPrefix!=='/' ? entryPrefix.replace(/\/$/, '')+'/' : ''
+    pathPrefix = pathPrefix && pathPrefix !== '/' ? pathPrefix.replace(/\/$/, '') + '/' : ''
+    entryPrefix = entryPrefix && entryPrefix !== '/' ? entryPrefix.replace(/\/$/, '') + '/' : ''
     var handle = fs.readdirSync(dir),
         tmp = {};
-    handle.forEach(function(filename,index){
-        var stats = fs.statSync(path.join(dir,filename));
-        if(stats.isDirectory()) {
+    handle.forEach(function (filename, index) {
+        var stats = fs.statSync(path.join(dir, filename));
+        if (stats.isDirectory()) {
             //合并entry
-            tmp = merge(getEntry(path.join(dir,filename), pathPrefix+filename, entryPrefix+filename), tmp);
-        } else if(stats.isFile() && /\.js$/.test(filename)){
-            if(/^_/.test(filename))
+            tmp = merge(getEntry(path.join(dir, filename), pathPrefix + filename, entryPrefix + filename), tmp);
+        } else if (stats.isFile() && /\.js$/.test(filename)) {
+            if (/^_/.test(filename))
                 return;
-            filename = filename.substr(0,filename.length-3);
-            tmp[entryPrefix+filename] = pathPrefix+filename;
+            filename = filename.substr(0, filename.length - 3);
+            tmp[entryPrefix + filename] = pathPrefix + filename;
         }
     });
     return tmp;

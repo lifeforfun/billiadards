@@ -1,5 +1,7 @@
 <?php
 return [
+    // 文件上传后的访问地址前缀
+    'file_url' => 'http://www.test.com/billiards/upload/',
     'emchat' => [
         // 企业id
         'org' => '1182170609115040',

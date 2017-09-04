@@ -1,5 +1,7 @@
 <?php
 return [
+    // 文件上传后的访问地址前缀
+    'file_url' => 'http://file.taiqiu8.com.cn/',
     'emchat' => [
         // 企业id
         'org' => '1138170818115604',

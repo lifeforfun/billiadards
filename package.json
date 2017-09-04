@@ -20,12 +20,16 @@
     "eslint-loader": "^1.7.1",
     "file-loader": "^0.11.1",
     "gulp": "^3.9.1",
+    "gulp-util": "^3.0.8",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
     "style-loader": "^0.18.1",
     "uglifyjs-webpack-plugin": "^0.4.3",
-    "webpack": "^2.6.1",
-    "webpack-stream": "^3.2.0"
+    "webpack": "^3.5.5",
+    "webpack-stream": "^4.0.0"
   },
   "dependencies": {
-    "bootstrap-datepicker": "^1.6.4"
+    "bootstrap-datepicker": "^1.6.4",
+    "wangeditor": "^3.0.8"
   }
 }

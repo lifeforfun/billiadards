@@ -11,12 +11,13 @@ use Yii;
  * @property string $title
  * @property string $dateline
  * @property string $tag
- * @property \yii\web\UploadedFile $cover
+ * @property string $cover
+ * @property integer $vid
+ * @property string $pids
  * @property string $content
  */
 class News extends \yii\db\ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -33,10 +34,11 @@ class News extends \yii\db\ActiveRecord
         return [
             [['title', 'dateline', 'content'], 'required'],
             [['dateline'], 'safe'],
+            [['vid'], 'integer'],
             [['content'], 'string'],
             [['title'], 'string', 'max' => 60],
             [['tag'], 'string', 'max' => 255],
-            [['cover'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png,jpg'],
+            [['cover', 'pids'], 'string', 'max' => 300],
         ];
     }
 
@@ -51,34 +53,9 @@ class News extends \yii\db\ActiveRecord
             'dateline' => '发布日期',
             'tag' => '标签列表:|关键词1|关键词2|...|',
             'cover' => '封面图url',
+            'vid' => '上传视频文件id',
+            'pids' => '上传图片文件id列表，英文逗号分隔',
             'content' => '文章内容',
         ];
-    }
-
-    public function getCover($size=null)
-    {
-        if ($size===null) {
-
-        }
-    }
-
-    public function getTag()
-    {
-        return explode('|', trim($this->tag, '|'));
-    }
-
-    public function setTag(array $tags)
-    {
-        $this->tag = empty($tags) ? '' : ('|' . implode('|', $tags) . '|');
-    }
-
-    public function upload()
-    {
-        if ($this->validate()) {
-            $this->cover->saveAs('uploads/'. $this->cover->baseName . '.' . $this->cover->extension);
-            return true;
-        } else {
-            return false;
-        }
     }
 }

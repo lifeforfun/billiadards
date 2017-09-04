@@ -13,6 +13,7 @@ use common\models\News;
 use yii\base\Exception;
 use yii\db\Query;
 use yii\web\BadRequestHttpException;
+use yii\web\UploadedFile;
 
 class NewsController extends Controller
 {
@@ -69,20 +70,66 @@ class NewsController extends Controller
         if ($id && !(new Query())->from('news')->where(['id' => $id])->exists()) {
             throw new BadRequestHttpException('信息不存在或已被删除');
         }
+
+        if ($id) {
+            $model = News::findOne(['id' => $id]);
+        } else {
+            $model = new News();
+        }
+
         if (!Yii::$app->request->isPost) {
-            if ($id) {
-                $model = News::findOne(['id' => $id]);
-            } else {
-                $model = new News();
-            }
             $this->registerJsFile('news/edit.js');
             return $this->render('edit', [
                 'model' => $model
             ]);
         }
 
-        // 保存POST
-        $model = new News();
-        $model->setAttributes(self::getPost());
+        try {
+            // 保存POST
+            $model->setAttributes(self::getPost());
+            $model->setTag($model->tag);
+            if (!$model->title) {
+                return $this->asJson([
+                    'status' => false,
+                    'msg' => '请填写标题'
+                ]);
+            }
+            if (!$model->dateline) {
+                $model->dateline = date('Y-m-d');
+            }
+            if (!$model->content) {
+                return $this->asJson([
+                    'status' => false,
+                    'msg' => '请填写内容'
+                ]);
+            }
+            if (isset($_FILES['cover']) && isset($_FILES['cover']['tmp_name'])) {
+                $model->cover = UploadedFile::getInstanceByName('cover');
+                if (!$model->cover || !$model->upload()) {
+                    return $this->asJson([
+                        'status' => false,
+                        'msg' => '封面图片保存失败'
+                    ]);
+                }
+            }
+
+            if (!$model->cover) {
+                return $this->asJson([
+                    'status' => false,
+                    'msg' => '请上传封面图'
+                ]);
+            }
+
+            $model->save();
+        } catch (\Exception $e) {
+            return $this->asJson([
+                'status' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+
+        return $this->asJson([
+            'status' => true
+        ]);
     }
 }

@@ -23,6 +23,7 @@ class ComposerStaticInit57eab4d0870c082e9f88da494937fc2a
             'yii\\debug\\' => 10,
             'yii\\composer\\' => 13,
             'yii\\bootstrap\\' => 14,
+            'yii\\imagine\\' => 12,
             'yii\\' => 4,
         ),
         'p' => 
@@ -98,6 +99,10 @@ class ComposerStaticInit57eab4d0870c082e9f88da494937fc2a
         'yii\\bootstrap\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-bootstrap',
+        ),
+        'yii\\imagine\\' =>
+        array(
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-imagine',
         ),
         'yii\\' => 
         array (
@@ -200,6 +205,13 @@ class ComposerStaticInit57eab4d0870c082e9f88da494937fc2a
             'HTMLPurifier' => 
             array (
                 0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
+            ),
+        ),
+        'I' =>
+        array(
+            'Imagine\\' =>
+            array(
+                0 => __DIR__ . '/..' . '/imagine/imagine/lib'
             ),
         ),
         'D' => 

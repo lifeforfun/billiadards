@@ -1,7 +1,8 @@
 /*************** datepicker ****************/
-require('bootstrap-datepicker')
-require('bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN')
-require('bootstrap-datepicker/dist/css/bootstrap-datepicker.css')
+import 'bootstrap-datepicker'
+import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN'
+import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.css'
+
 $.fn.datepicker.defaults.language = 'zh-CN'
 $.fn.datepicker.dates['zh-CN'].format = {
     toDisplay(date) {
@@ -13,9 +14,13 @@ $.fn.datepicker.dates['zh-CN'].format = {
 }
 
 /*************** layer *********************/
+import 'vendor/layer-dialog/skin/layer.css'
 window.layer = require('vendor/layer-dialog')
-require('vendor/layer-dialog/skin/layer.css')
 
+
+export function redirect(url) {
+    window.location = url
+}
 
 /**
  *
