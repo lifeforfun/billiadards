@@ -1,0 +1,136 @@
+.carousel {
+    position: relative;
+    margin-bottom: 20px;
+    overflow: hidden;
+    line-height: 1;
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom:10px;
+    left:0;
+    width:100%;
+    text-align:center;
+    z-index: 5;
+    margin: 0;
+    list-style: none;
+}
+
+.carousel-indicators li {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+    text-indent: -999px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+}
+
+.carousel-indicators .active {
+    background-color: #fff;
+}
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-inner .carousel-item {
+    display: none;
+}
+
+.carousel-inner .carousel-item:first-child {
+    display:block;
+}
+
+.carousel-inner .carousel-item img{
+    width:100%;
+}
+
+.carousel-caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.carousel-caption h4 {
+    margin: 0 0 5px;
+    line-height: 20px;
+    color: #ffffff;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 40%;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    font-size: 60px;
+    font-weight: 100;
+    line-height: 30px;
+    color: #ffffff;
+    text-align: center;
+    background: #222222;
+    border: 3px solid #ffffff;
+    -webkit-border-radius: 23px;
+    border-radius: 23px;
+    opacity: 0.5;
+}
+
+.carousel-control:hover, .carousel-control:focus {
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.9;
+}
+
+.carousel-control.right {
+    right: 15px;
+    left: auto;
+}
+
+
+
+/****************** detail ***********************/
+.detail-title {
+    margin: 10px;
+    font-size:22px;
+    font-weight: bold;
+    font-family:微软雅黑;
+}
+
+.detail-dateline {
+    margin:10px;
+    font-size:14px;
+    color:darkgray;
+}
+
+.detail-video {
+    margin:auto;
+    display:block;
+    max-width:100%;
+    max-height:300px;
+}
+
+.detail-content {
+    margin:10px;
+    font-size:18px;
+    color:#333;
+}
+
+.detail-relate-t {
+    font-size:16px;
+    margin-left:5px;
+}
+
+.media-heading a {
+    color:inherit;
+}
+
+.media-subtitle {
+    color:darkgray;
+}

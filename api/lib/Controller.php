@@ -14,6 +14,7 @@ class Controller extends CController
 {
     use \common\block\RequestTrait;
     use \common\block\ApiRequestTrait;
+    use \common\block\RegisterAssetsTrait;
 
     public function init()
     {

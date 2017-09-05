@@ -5,7 +5,9 @@
   "main": " ",
   "scripts": {
     "build": "gulp",
-    "dev": "gulp watch-backend"
+    "dev": "gulp watch-backend",
+    "build-api": "gulp build-api",
+    "dev-api": "gulp watch-api"
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +32,7 @@
   },
   "dependencies": {
     "bootstrap-datepicker": "^1.6.4",
+    "carousel-widget": "^1.0.3",
     "wangeditor": "^3.0.8"
   }
 }

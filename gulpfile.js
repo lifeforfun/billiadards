@@ -21,6 +21,13 @@ gulp.add('watch-backend', function () {
     return doDev('backend')
 })
 
+gulp.add('build-api', () => {
+    return doBuild('api')
+})
+
+gulp.add('watch-api', () => {
+    return doDev('api')
+})
 
 function doBuild(platform) {
     return webpackStream(getConfig(platform, {

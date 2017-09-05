@@ -6,6 +6,7 @@ use common\block\ThumbTrait;
 use common\models\News;
 use common\models\UploadFile;
 use yii\db\Query;
+use yii\web\HttpException;
 
 class NewsController extends \api\lib\Controller
 {
@@ -74,7 +75,7 @@ class NewsController extends \api\lib\Controller
      */
     public function actionDetail()
     {
-        $id = self::getPost('id');
+        $id = self::getQuery('id');
 
         $data = array(
             'video' => null,
@@ -82,10 +83,7 @@ class NewsController extends \api\lib\Controller
         );
         $model = News::findOne(['id' => $id, 'status' => 1]);
         if (!$model) {
-            return self::asJson([
-                'status' => false,
-                'msg' => '信息不存在或未通过审核'
-            ]);
+            throw new HttpException(404, '信息不存在或未通过审核');
         }
         if ($model->vid) {
             $video = UploadFile::findOne(['id' => $model->vid]);
@@ -107,9 +105,23 @@ class NewsController extends \api\lib\Controller
 
         $data = array_merge($data, $model->getAttributes(['id', 'title', 'dateline', 'tag', 'content']));
 
-        return self::asJson([
-            'status' => true,
-            'data' => $data,
+        $data['relate'] = News::find()
+            ->select(['id', 'title', 'cover', 'dateline'])
+            ->where('status=1 AND id!=:id', [
+                ':id' => $id
+            ])
+            ->limit(10)
+            ->asArray()
+            ->all();
+
+        foreach ($data['relate'] as &$item) {
+            $item['cover'] = ThumbTrait::getThumb($item['cover'], 'small');
+        }
+        unset($item);
+
+        $this->registerJsFile('news/detail.js');
+        return $this->render('detail', [
+            'detail' => $data
         ]);
     }
 
