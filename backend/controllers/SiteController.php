@@ -83,26 +83,26 @@ class SiteController extends Controller
     {
         $uploader = UploadedFile::getInstanceByName('img');
         if (!$uploader) {
-            return self::asJson([
+            return $this->asJson([
                 'errno' => 1,
                 'msg' => '图片上传失败',
             ]);
         }
         $image = getimagesize($uploader->tempName);
         if (!$image) {
-            return self::asJson([
+            return $this->asJson([
                 'errno' => 1,
                 'msg' => '上传文件必须是图片',
             ]);
         }
 
         if (!($saved = $this->saveFile($uploader))) {
-            return self::asJson([
+            return $this->asJson([
                 'errno' => 1,
                 'msg' => '图片文件保存失败'
             ]);
         }
-        return self::asJson([
+        return $this->asJson([
             'errno' => 0,
             'data' => [ $saved['url'] ]
         ]);

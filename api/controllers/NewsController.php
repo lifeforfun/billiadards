@@ -2,14 +2,19 @@
 
 namespace api\controllers;
 
+use Yii;
 use common\block\ThumbTrait;
+use common\block\SaveFileTrait;
 use common\models\News;
 use common\models\UploadFile;
+use yii\db\Exception;
 use yii\db\Query;
 use yii\web\HttpException;
+use yii\web\UploadedFile;
 
 class NewsController extends \api\lib\Controller
 {
+
     /**
      * 信息列表
      * @var integer $page 页数,默认1
@@ -60,7 +65,7 @@ class NewsController extends \api\lib\Controller
         }
         unset($item);
 
-        return self::asJson([
+        return $this->asJson([
             'status' => true,
             'data' => [
                 'total' => $total,
@@ -126,10 +131,95 @@ class NewsController extends \api\lib\Controller
     }
 
     /**
-     *
+     * @var File $video 上传视频
+     * @var File[] $pic 上传图片数组
+     * @var string $title 标题
+     * @var string $content 内容
      */
     public function actionCreate()
     {
+        $video = UploadedFile::getInstanceByName('video');
+        $pics = UploadedFile::getInstancesByName('pic');
+        $title = trim((string)self::getPost('title'));
+        $content = trim((string)self::getPost('content'));
 
+        if ($title==='') {
+            return $this->asJson([
+                'status' => false,
+                'msg' => '请填写标题'
+            ]);
+        }
+
+        if ($content==='') {
+            return $this->asJson([
+                'status' => false,
+                'msg' => '请填写内容'
+            ]);
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+
+            $news = new News([
+                'title' => $title,
+                'status' => 0,
+                'dateline' => date('Y-m-d'),
+                'pids' => [],
+                'content' => $content
+            ]);
+
+            if ($video
+                && !$video->hasError
+                && in_array($video->extension, ['mp4', 'flv', 'avi'])
+                && $resp = SaveFileTrait::saveFile($video)) {
+                $fvideo = new UploadFile([
+                    'filepath' => $resp['path'],
+                    'url' => $resp['url'],
+                    'type' => 'video',
+                ]);
+                if (!$fvideo->validate()) {
+                    throw new Exception('视频校验失败');
+                }
+                $fvideo->save();
+                $news->vid = $fvideo->id;
+            }
+
+            foreach ($pics as $pic) {
+                if ($pic
+                    && !$pic->hasError
+                    && in_array($pic->extension, ['jpg', 'png', 'gif'])
+                    && $resp = SaveFileTrait::saveFile($pic)) {
+                    ThumbTrait::setThumb($resp['path']);
+                    $fpic = new UploadFile([
+                        'filepath' => $resp['path'],
+                        'url' => $resp['url'],
+                        'type' => 'pic',
+                    ]);
+                    if (!$fpic->validate()) {
+                        throw new Exception('图片校验失败');
+                    }
+                    $fpic->save();
+                    $news->cover = $news->cover ? : $fpic->url;
+                    $news->pids[] = $fpic->id;
+                }
+            }
+
+            $news->pids = implode(',', $news->pids);
+            $news->save();
+
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return $this->asJson([
+                'status' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+
+        $transaction->commit();
+
+        return $this->asJson([
+            'status' => true
+        ]);
     }
 }

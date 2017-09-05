@@ -35,11 +35,13 @@ $this->title = $detail['title'];
 <div class="detail-relate-t">相关新闻</div>
 <?php foreach ($detail['relate'] as $item):?>
 <div class="media">
+    <?php if($item['cover']):?>
     <div class="media-left">
         <a href="<?=Yii::$app->urlManager->createUrl(['news/detail', 'id' => $item['id']])?>">
             <img class="media-object" src="<?=$item['cover']?>" alt="<?=Html::encode($item['title'])?>">
         </a>
     </div>
+    <?php endif;?>
     <div class="media-body">
         <h4 class="media-heading">
             <a href="<?=Yii::$app->urlManager->createUrl(['news/detail', 'id' => $item['id']])?>">
