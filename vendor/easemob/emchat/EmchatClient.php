@@ -87,7 +87,7 @@ class EmchatClient
                 $headers[] = $k.':'.$v;
             }
         }
-        if (isset($setting[CURLOPT_POST]) && $setting[CURLOPT_POST] && !empty($body)) {
+        if (!empty($body)) {
             $post = array();
             $postFile = false;
             foreach ($body as $k => $v) {

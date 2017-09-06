@@ -132,7 +132,7 @@ class SiteController extends \api\lib\Controller
             $db = new User();
             $db->uname = $data['uname'];
             $db->nick = $db->uname;
-            $db->pwd = $db->encrptPassword($data['pwd']);
+            $db->pwd = User::encrptPassword($data['pwd']);
             $db->created = Yii::$app->params['datetime'];
             $db->last_login = $db->created;
             $db->save();
