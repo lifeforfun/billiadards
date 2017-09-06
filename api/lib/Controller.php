@@ -7,6 +7,7 @@
  */
 namespace api\lib;
 
+use common\models\LoginSession;
 use yii\web\Controller as CController;
 use Yii;
 
@@ -33,5 +34,22 @@ class Controller extends CController
     public function behaviors()
     {
         return [];
+    }
+
+    /**
+     * 检测登录参数
+     * @var $uid
+     * @var $session
+     * @return bool
+     */
+    public static function checkLogin()
+    {
+        return LoginSession::find()
+            ->where([
+                'uid' => self::getPost('uid'),
+                'session' => self::getPost('session')
+            ])
+            ->andWhere(['>', 'expires', date('Y-m-d H:i:s')])
+            ->exists();
     }
 }

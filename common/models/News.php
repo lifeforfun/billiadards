@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $id
  * @property integer $status
+ * @property integer $uid
  * @property string $title
  * @property string $dateline
  * @property string $tag
@@ -33,8 +34,8 @@ class News extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'integer'],
-            [['title', 'dateline', 'content'], 'required'],
+            [['status', 'uid'], 'integer'],
+            [['title', 'dateline', 'content', 'uid'], 'required'],
             [['dateline'], 'safe'],
             [['vid'], 'integer'],
             [['content'], 'string'],
@@ -52,6 +53,7 @@ class News extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'status' => '审核状态',
+            'uid' => '用户id',
             'title' => '文章标题',
             'dateline' => '发布日期',
             'tag' => '标签列表:|关键词1|关键词2|...|',

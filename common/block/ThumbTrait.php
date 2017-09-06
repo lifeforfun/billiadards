@@ -17,13 +17,13 @@ trait ThumbTrait
         $pathinfo = pathinfo($filepath);
 
         // small
-        Image::thumbnail($filepath, 220, 180)
+        Image::thumbnail($filepath, 100, 80)
             ->save("{$pathinfo['dirname']}/{$pathinfo['filename']}_small.jpg", [
                 'format' => 'jpg',
             ]);
 
         // mid
-        Image::thumbnail($filepath, 320, 280)
+        Image::thumbnail($filepath, 320, 220)
             ->save("{$pathinfo['dirname']}/{$pathinfo['filename']}_mid.jpg", [
                 'format' => 'jpg',
             ]);
@@ -31,6 +31,9 @@ trait ThumbTrait
 
     public static function getThumb($fileurl, $size=null)
     {
+        if (!$fileurl) {
+            return '';
+        }
         $pathinfo = pathinfo($fileurl);
 
         if ($size!==null) {

@@ -15,6 +15,8 @@ use yii\web\UploadedFile;
 class NewsController extends \api\lib\Controller
 {
 
+    use SaveFileTrait;
+
     /**
      * 信息列表
      * @var integer $page 页数,默认1
@@ -131,6 +133,8 @@ class NewsController extends \api\lib\Controller
     }
 
     /**
+     * @var integer $uid 用户id
+     * @var string $session 用户登录令牌
      * @var File $video 上传视频
      * @var File[] $pic 上传图片数组
      * @var string $title 标题
@@ -142,6 +146,13 @@ class NewsController extends \api\lib\Controller
         $pics = UploadedFile::getInstancesByName('pic');
         $title = trim((string)self::getPost('title'));
         $content = trim((string)self::getPost('content'));
+
+        if (!self::checkLogin()) {
+            return $this->asJson([
+                'status' => false,
+                'msg' => '登录失效'
+            ]);
+        }
 
         if ($title==='') {
             return $this->asJson([
@@ -162,6 +173,7 @@ class NewsController extends \api\lib\Controller
         try {
 
             $news = new News([
+                'uid' => self::getPost('uid'),
                 'title' => $title,
                 'status' => 0,
                 'dateline' => date('Y-m-d'),
@@ -172,7 +184,7 @@ class NewsController extends \api\lib\Controller
             if ($video
                 && !$video->hasError
                 && in_array($video->extension, ['mp4', 'flv', 'avi'])
-                && $resp = SaveFileTrait::saveFile($video)) {
+                && $resp = $this->saveFile($video)) {
                 $fvideo = new UploadFile([
                     'filepath' => $resp['path'],
                     'url' => $resp['url'],
@@ -189,7 +201,7 @@ class NewsController extends \api\lib\Controller
                 if ($pic
                     && !$pic->hasError
                     && in_array($pic->extension, ['jpg', 'png', 'gif'])
-                    && $resp = SaveFileTrait::saveFile($pic)) {
+                    && $resp = $this->saveFile($pic)) {
                     ThumbTrait::setThumb($resp['path']);
                     $fpic = new UploadFile([
                         'filepath' => $resp['path'],
@@ -201,7 +213,7 @@ class NewsController extends \api\lib\Controller
                     }
                     $fpic->save();
                     $news->cover = $news->cover ? : $fpic->url;
-                    $news->pids[] = $fpic->id;
+                    $news->pids = array_merge($news->pids, [$fpic->id]);
                 }
             }
 

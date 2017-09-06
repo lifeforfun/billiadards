@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2017 年 09 月 04 日 10:59
+-- 生成日期: 2017 年 09 月 06 日 10:22
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.4.45
 
@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `login_session` (
 CREATE TABLE IF NOT EXISTS `news` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '审核状态:0未审核1已审核',
+  `uid` int(11) NOT NULL COMMENT '用户id',
   `title` varchar(60) COLLATE utf8_unicode_ci NOT NULL COMMENT '文章标题',
   `dateline` date NOT NULL COMMENT '发布日期',
   `tag` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '标签列表:|关键词1|关键词2|...|',
@@ -52,8 +53,9 @@ CREATE TABLE IF NOT EXISTS `news` (
   `content` text COLLATE utf8_unicode_ci NOT NULL COMMENT '文章内容',
   PRIMARY KEY (`id`),
   KEY `title` (`title`,`tag`,`dateline`),
-  KEY `status` (`status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='文章列表' AUTO_INCREMENT=3 ;
+  KEY `status` (`status`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='文章列表' AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -67,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `upload_file` (
   `url` varchar(300) COLLATE utf8_unicode_ci NOT NULL COMMENT '访问地址',
   `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT '文件类型:video/pic/other',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='上传文件' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='上传文件' AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
