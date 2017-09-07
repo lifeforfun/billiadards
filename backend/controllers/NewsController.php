@@ -7,6 +7,7 @@
  */
 namespace backend\controllers;
 
+use common\block\ThumbTrait;
 use Yii;
 use backend\lib\Controller;
 use common\models\News;
@@ -25,11 +26,11 @@ class NewsController extends Controller
 
     public function actionList()
     {
-        $where = '';
+        $where = '1';
         $bind = [];
 
         if (self::getQuery('title')!=='') {
-            $where .= 'title like :title';
+            $where .= ' AND title like :title';
             $bind[':title'] = '%'.self::getQuery('title').'%';
         }
 
@@ -43,6 +44,11 @@ class NewsController extends Controller
             $bind[':end'] = self::getQuery('end');
         }
 
+        if (self::getQuery('status')!=='') {
+            $where .= ' AND status=:status';
+            $bind[':status'] = self::getQuery('status');
+        }
+
         $page = (int)self::getQuery('page', 1);
         $pagesize = (int)self::getQuery('pagesize', 10);
 
@@ -52,11 +58,17 @@ class NewsController extends Controller
 
         $total = $query->count();
         $list = $query
-            ->select(['id', 'title', 'dateline', 'cover'])
+            ->select(['id', 'title', 'dateline', 'cover', 'status'])
             ->orderBy(['dateline' => SORT_DESC])
             ->offset(($page-1)*$pagesize)
             ->limit($pagesize)
             ->all();
+
+        foreach ($list as &$item) {
+            if ($item['cover']) {
+                $item['cover'] = ThumbTrait::getThumb($item['cover'], 'small');
+            }
+        }
 
         return $this->asJson(['status' => true, 'data' => [
             'list' => $list,
@@ -131,5 +143,33 @@ class NewsController extends Controller
         return $this->asJson([
             'status' => true
         ]);
+    }
+
+    public function actionAudit()
+    {
+        $id = self::getQuery('id');
+        $news = News::findOne(['id' => $id]);
+        if (!$news) {
+            return $this->asJson([
+                'status' => false,
+                'msg' => '信息不存在'
+            ]);
+        }
+        $news->status = 1;
+        if (!$news->save()) {
+            return $this->asJson([
+                'status' => false,
+                'msg' => '信息状态修改失败'
+            ]);
+        }
+
+        return $this->asJson([
+            'status' => true
+        ]);
+    }
+
+    public function actionDelete()
+    {
+
     }
 }

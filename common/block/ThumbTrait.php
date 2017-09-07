@@ -41,4 +41,19 @@ trait ThumbTrait
         }
         return $fileurl;
     }
+
+    public static function deleteThumb($filepath)
+    {
+        $pathinfo = pathinfo($filepath);
+
+        // small
+        if (is_file("{$pathinfo['dirname']}/{$pathinfo['filename']}_small.jpg")) {
+            unlink("{$pathinfo['dirname']}/{$pathinfo['filename']}_small.jpg");
+        }
+
+        // mid
+        if (is_file("{$pathinfo['dirname']}/{$pathinfo['filename']}_mid.jpg")) {
+            unlink("{$pathinfo['dirname']}/{$pathinfo['filename']}_mid.jpg");
+        }
+    }
 }

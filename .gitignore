@@ -37,3 +37,7 @@ phpunit.phar
 
 # npm package directory
 node_modules
+
+# tmodjs-loader
+.debug.js
+.temp

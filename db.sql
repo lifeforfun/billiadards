@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2017 年 09 月 06 日 10:22
+-- 生成日期: 2017 年 09 月 07 日 22:37
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.4.45
 
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   KEY `title` (`title`,`tag`,`dateline`),
   KEY `status` (`status`),
   KEY `uid` (`uid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='文章列表' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='文章列表' AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `upload_file` (
   `url` varchar(300) COLLATE utf8_unicode_ci NOT NULL COMMENT '访问地址',
   `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT '文件类型:video/pic/other',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='上传文件' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='上传文件' AUTO_INCREMENT=26 ;
 
 -- --------------------------------------------------------
 
@@ -96,14 +96,14 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 CREATE TABLE IF NOT EXISTS `user_field` (
   `uname` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `avatar` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '头像',
+  `avatar` int(11) NOT NULL DEFAULT '0' COMMENT '头像文件id',
   `real_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '真实姓名',
   `mobile` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '电话',
   `qq` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'QQ',
   `gender` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '性别(mael:男,female:女)',
-  `province` int(10) unsigned NOT NULL COMMENT '地区',
-  `city` int(10) unsigned NOT NULL COMMENT '市',
-  `county` int(10) unsigned NOT NULL COMMENT '县',
+  `province` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '地区',
+  `city` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '市',
+  `county` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '县',
   PRIMARY KEY (`uname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户资料';
 

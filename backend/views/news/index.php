@@ -18,6 +18,13 @@ $this->title = '信息列表';
         <span>-</span>
         <input type="text" class="form-control" name="end" />
     </div>
+    <div class="form-group">
+        <select id="s-status" name="status" class="form-control">
+            <option value="">状态</option>
+            <option value="0">未审核</option>
+            <option value="1">已通过</option>
+        </select>
+    </div>
     <button type="submit" class="btn btn-primary">筛选</button>
     <a href="<?= Url::to(['news/edit'])?>" class="btn btn-success">
         <i class="glyphicon glyphicon-plus"></i>

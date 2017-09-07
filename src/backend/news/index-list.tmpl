@@ -1,0 +1,22 @@
+{{each list as item}}
+<tr>
+    <td>
+        {{if item.cover}}
+        <img src="{{item.cover}}" />
+        {{/if}}
+        {{item.title}}
+    </td>
+    <td>
+        {{item.dateline}}
+    </td>
+    <td>
+        {{if item.status==0}}
+        <a href="#" class="audit" data-id="{{item.id}}">审核通过</a>
+        |
+        {{/if}}
+        <a href="{{ {'id':item.id} | url:'/news/edit' }}">详细内容</a>
+        |
+        <a href="#" class="del" data-id="{{item.id}}">删除</a>
+    </td>
+</tr>
+{{/each}}

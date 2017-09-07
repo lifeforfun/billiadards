@@ -1,3 +1,5 @@
+import '_tpl_helpers'
+
 /*************** datepicker ****************/
 import 'bootstrap-datepicker'
 import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN'
