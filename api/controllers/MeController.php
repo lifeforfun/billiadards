@@ -154,6 +154,7 @@ class MeController extends \api\lib\Controller
         }
 
         $transaction = \Yii::$app->db->beginTransaction();
+
         try {
 
             $avatar = UploadedFile::getInstanceByName('avatar');
@@ -213,8 +214,15 @@ class MeController extends \api\lib\Controller
 
         $transaction->commit();
 
+        $data = $userField->getAttributes(null, ['avatar']);
+        if ($userField->avatar) {
+            $avatar = UploadFile::findOne(['id' => $userField->avatar]);
+            $data['avatar'] = ThumbTrait::getThumb($avatar->url, 'small');
+        }
+
         return $this->asJson([
             'status' => true,
+            'data' => $data
         ]);
     }
 }
