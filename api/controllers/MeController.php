@@ -6,6 +6,7 @@ use common\block\ThumbTrait;
 use common\models\UploadFile;
 use common\models\User;
 use common\models\UserField;
+use yii\db\Exception;
 use yii\web\UploadedFile;
 
 class MeController extends \api\lib\Controller
@@ -202,7 +203,10 @@ class MeController extends \api\lib\Controller
             $userField->city = trim((string)self::getPost('city'));
             $userField->county = trim((string)self::getPost('county'));
 
-            $userField->save();
+            if (!$userField->save()) {
+                $errors = $userField->errors;
+                throw new Exception( current(current($errors)) );
+            }
 
         } catch (\Exception $e) {
             $transaction->rollBack();
