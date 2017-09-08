@@ -7,8 +7,11 @@
  */
 namespace api\controllers;
 
+use common\block\ThumbTrait;
 use common\models\LoginSession;
+use common\models\UploadFile;
 use common\models\User;
+use common\models\UserField;
 use Yii;
 use yii\base\Exception;
 use yii\db\Query;
@@ -90,6 +93,7 @@ class SiteController extends \api\lib\Controller
 
             $transaction = Yii::$app->db->beginTransaction();
             try {
+
                 $user = User::findOne(['uid' => $uid]);
                 $user->last_login = Yii::$app->params['datetime'];
                 $loginSession = LoginSession::findOne(['uid' => $uid, 'session' => $session]);
@@ -110,9 +114,18 @@ class SiteController extends \api\lib\Controller
 
         }
 
+        $data = $loginSession->getAttributes();
+        $data['avatar'] = '';
+        $data['uname'] = $user->uname;
+        $userField = UserField::findOne(['uname' => $user->uname]);
+        if ($userField && $userField->avatar) {
+            $avatar = UploadFile::findOne(['id' => $userField->avatar]);
+            $data['avatar'] = ThumbTrait::getThumb($avatar->url, 'small');
+        }
+
         return $this->asJson([
             'status' => true,
-            'data' => $loginSession->attributes
+            'data' => $data
         ]);
     }
 
