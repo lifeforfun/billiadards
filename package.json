@@ -34,6 +34,7 @@
   "dependencies": {
     "bootstrap-datepicker": "^1.6.4",
     "carousel-widget": "^1.0.3",
+    "paginationjs": "^2.0.8",
     "wangeditor": "^3.0.8"
   }
 }

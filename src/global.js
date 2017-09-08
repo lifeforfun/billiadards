@@ -1,5 +1,8 @@
 import '_tpl_helpers'
 
+/*************** pagination ****************/
+import 'vendor/pagination'
+
 /*************** datepicker ****************/
 import 'bootstrap-datepicker'
 import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN'

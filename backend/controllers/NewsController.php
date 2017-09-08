@@ -11,7 +11,6 @@ use common\block\ThumbTrait;
 use Yii;
 use backend\lib\Controller;
 use common\models\News;
-use yii\base\Exception;
 use yii\db\Query;
 use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;

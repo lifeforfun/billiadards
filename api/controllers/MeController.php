@@ -2,7 +2,10 @@
 
 namespace api\controllers;
 
+use backend\controllers\AboutController;
 use common\block\ThumbTrait;
+use common\models\Feedback;
+use common\models\Params;
 use common\models\UploadFile;
 use common\models\User;
 use common\models\UserField;
@@ -227,6 +230,72 @@ class MeController extends \api\lib\Controller
         return $this->asJson([
             'status' => true,
             'data' => $data
+        ]);
+    }
+
+    /**
+     * 意见反馈
+     * @var integer $uid
+     * @var string $session
+     * @var string $content 反馈内容
+     * @return array
+     */
+    public function actionFeedback()
+    {
+        if (!self::checkLogin()) {
+            return $this->asJson([
+                'status' => false,
+                'msg' => '登录失效'
+            ]);
+        }
+        $content = trim((string)self::getPost('content'));
+        if ($content==='') {
+            return $this->asJson([
+                'status' => false,
+                'msg' => '请填写反馈内容'
+            ]);
+        }
+
+        $feed = new Feedback([
+            'dateline' => date('Y-m-d H:i:s'),
+            'uid' => self::getPost('uid'),
+            'content' => $content
+        ]);
+
+        if (!$feed->save()) {
+            $errors = $feed->getErrors();
+            return $this->asJson([
+                'status' => false,
+                'msg' => current(current($errors))
+            ]);
+        }
+
+        return $this->asJson([
+            'status' => true,
+        ]);
+    }
+
+    /**
+     * 关于我们
+     */
+    public function actionAbout()
+    {
+        $about = Params::findOne([
+            'pkey' => AboutController::PARAM_KEY
+        ]);
+        if (!$about) {
+            return $this->asJson([
+                'status' => true,
+                'data' => [
+                    'about' => '',
+                ]
+            ]);
+        }
+        return $this->asJson([
+            'status' => true,
+            'data' => [
+                'about' => $about->pvalue
+            ]
         ]);
     }
 }

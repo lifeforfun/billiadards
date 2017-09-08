@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2017 年 09 月 07 日 22:37
+-- 生成日期: 2017 年 09 月 08 日 20:48
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.4.45
 
@@ -19,6 +19,23 @@ SET time_zone = "+00:00";
 --
 -- 数据库: `yii2`
 --
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `feedback`
+--
+
+CREATE TABLE IF NOT EXISTS `feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
+  `dateline` datetime NOT NULL,
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `dateline` (`dateline`),
+  KEY `dateline_2` (`dateline`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='意见反馈' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -60,6 +77,18 @@ CREATE TABLE IF NOT EXISTS `news` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `params`
+--
+
+CREATE TABLE IF NOT EXISTS `params` (
+  `pkey` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `pvalue` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`pkey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='站点变量';
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `upload_file`
 --
 
@@ -69,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `upload_file` (
   `url` varchar(300) COLLATE utf8_unicode_ci NOT NULL COMMENT '访问地址',
   `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT '文件类型:video/pic/other',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='上传文件' AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='上传文件' AUTO_INCREMENT=28 ;
 
 -- --------------------------------------------------------
 
@@ -97,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 CREATE TABLE IF NOT EXISTS `user_field` (
   `uname` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `avatar` int(11) NOT NULL DEFAULT '0' COMMENT '头像文件id',
-  `real_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '真实姓名',
+  `real_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '真实姓名',
   `mobile` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '电话',
   `qq` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'QQ',
   `gender` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '性别(mael:男,female:女)',

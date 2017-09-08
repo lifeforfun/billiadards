@@ -36,7 +36,27 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => '首页', 'url' => ['/site/index']],
-        ['label' => '信息', 'url' => ['/news/index']]
+        [
+            'label' => '信息',
+            'url' => ['/news/index'],
+            'active' => Yii::$app->controller->id === 'news'
+        ],
+        [
+            'label' => '站点相关',
+            'active' => in_array(Yii::$app->controller->id, ['feedback', 'about']),
+            'items' => [
+                [
+                    'label' => '意见反馈',
+                    'url' => ['/feedback/index'],
+                    'active' => Yii::$app->controller->id === 'feedback'
+                ],
+                [
+                    'label' => '关于我们',
+                    'url' => ['/about/index'],
+                    'active' => Yii::$app->controller->id === 'about'
+                ]
+            ]
+        ]
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

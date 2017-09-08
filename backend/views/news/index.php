@@ -41,3 +41,4 @@ $this->title = '信息列表';
     </thead>
     <tbody id="list-wrap"></tbody>
 </table>
+<div id="page"></div>

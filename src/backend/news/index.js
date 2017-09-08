@@ -2,11 +2,10 @@ import {prevent} from 'global'
 import TplList from './index-list.tmpl'
 
 function Page(page_no) {
-    Page.param = Page.param||{ pagesize:10 }
+    Page.param = Page.param||{ pagesize:2 }
     let param = Page.param,
         layerId = layer.load()
     param.page = page_no
-    console.log(param)
     $.getJSON(createUrl('news/list'), param)
         .then(ret => {
             if (!ret.status) {
@@ -16,6 +15,21 @@ function Page(page_no) {
             $('#list-wrap').html(TplList({
                 list:Page.list
             }))
+            var pag = $('#page'),
+                total = Number(ret.data.total)
+            if (pag.data('load')) {
+                pag.pagination('updateItemsCount', total, page_no)
+            } else {
+                pag.data('load', 1).pagination({
+                    showCtrl:true,
+                    itemsCount:total,
+                    currentPage:page_no,
+                    pageSize:param.pagesize,
+                    onSelect(p) {
+                        Page(p)
+                    }
+                })
+            }
         })
         .fail(e => {
             if (e && e.status!==200) {
