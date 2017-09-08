@@ -112,7 +112,7 @@ class EmchatClient
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_MAXREDIRS => 3,
             //上传文件相关设置
-            CURLOPT_FOLLOWLOCATION => true,
+//            CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_SSL_VERIFYHOST => 0,// 对认证证书来源的检查
             CURLOPT_SSL_VERIFYPEER => false,// 从证书中检查SSL加密算
         ), $setting));
