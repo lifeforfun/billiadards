@@ -198,7 +198,7 @@ class MeController extends \api\lib\Controller
 
             $userField->real_name = trim((string)self::getPost('real_name'));
 
-            $mobile = (int)self::getPost('mobile');
+            $mobile = (string)self::getPost('mobile');
             if (preg_match('/^1\d{10}$/', $mobile)) {
                 $userField->mobile = $mobile;
             }
