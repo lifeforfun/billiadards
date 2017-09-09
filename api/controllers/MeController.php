@@ -103,10 +103,17 @@ class MeController extends \api\lib\Controller
        $userField = UserField::findOne(['uname' => $user->uname]);
 
        if (!$userField) {
-           return $this->asJson([
-               'status' => true,
-               'data' => null
+           $userField = new UserField([
+               'uname' => $user->uname,
+               'mobile' => $user->uname,
            ]);
+           if (!$userField->save()) {
+               $errors = $userField->getErrors();
+               return $this->asJson([
+                   'status' => false,
+                   'msg' => current(current($errors))
+               ]);
+           }
        }
 
        $data = $userField->getAttributes(['uname', 'real_name', 'mobile', 'qq', 'gender', 'province', 'city', 'county']);
