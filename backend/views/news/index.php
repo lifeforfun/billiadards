@@ -5,7 +5,6 @@
 
 use yii\helpers\Url;
 
-$this->title = '信息列表';
 ?>
 <form class="form-inline" onsubmit="return false">
     <div class="form-group">

@@ -2,7 +2,7 @@ import {prevent} from 'global'
 import TplList from './index-list.tmpl'
 
 function Page(page_no) {
-    Page.param = Page.param||{ pagesize:2 }
+    Page.param = Page.param||{ pagesize:10 }
     let param = Page.param,
         layerId = layer.load()
     param.page = page_no

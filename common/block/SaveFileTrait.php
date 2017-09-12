@@ -18,7 +18,7 @@ trait SaveFileTrait
      */
     public function saveFile($file)
     {
-        $filename = md5_file($file->tempName) . '.' . $file->extension;
+        $filename = md5($file->tempName . microtime(true)) . '.' . $file->extension;
         $filepath = dirname(dirname(__DIR__)) . '/upload/';
         $absFilepath = $filepath . $filename;
         if (!$file->saveAs($absFilepath)) {

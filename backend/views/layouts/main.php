@@ -11,6 +11,9 @@ use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
 AppAsset::register($this);
+
+$this->title = Yii::$app->params['title'];
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

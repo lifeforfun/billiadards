@@ -7,16 +7,22 @@
  */
 namespace backend\controllers;
 
+use common\block\SaveFileTrait;
 use common\block\ThumbTrait;
+use common\models\UploadFile;
 use Yii;
 use backend\lib\Controller;
 use common\models\News;
+use yii\db\Exception;
 use yii\db\Query;
 use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
 
 class NewsController extends Controller
 {
+
+    use SaveFileTrait;
+
     public function actionIndex()
     {
         $this->registerJsFile('news/index.js');
@@ -89,16 +95,26 @@ class NewsController extends Controller
         }
 
         if (!Yii::$app->request->isPost) {
+
+            if ($model->vid) {
+                $video = UploadFile::findOne(['id' => $model->vid]);
+            }
+
+            if ($model->pids) {
+                $pics = UploadFile::findAll(explode(',', $model->pids));
+            }
+
             $this->registerJsFile('news/edit.js');
             return $this->render('edit', [
-                'model' => $model
+                'model' => $model,
+                'video' => isset($video) ? $video : null,
+                'pics' => isset($pics) ? $pics : [],
             ]);
         }
 
         try {
             // 保存POST
             $model->setAttributes(self::getPost());
-            $model->setTag($model->tag);
             if (!$model->title) {
                 return $this->asJson([
                     'status' => false,
@@ -114,24 +130,83 @@ class NewsController extends Controller
                     'msg' => '请填写内容'
                 ]);
             }
-            if (isset($_FILES['cover']) && isset($_FILES['cover']['tmp_name'])) {
-                $model->cover = UploadedFile::getInstanceByName('cover');
-                if (!$model->cover || !$model->upload()) {
-                    return $this->asJson([
-                        'status' => false,
-                        'msg' => '封面图片保存失败'
+
+            $video = UploadedFile::getInstanceByName('video');
+            if ($video && !$video->hasError && in_array($video->extension, ['mp4', 'flv', 'avi'])) {
+                $oldVideo = $model->vid ? UploadFile::findOne($model->vid) : null;
+                $resp = self::saveFile($video);
+                if ($resp) {
+                    if ($oldVideo) {
+                        $oldVideo->delete();
+                        unlink($oldVideo->filepath);
+                    }
+                    $video = new UploadFile([
+                        'url' => $resp['url'],
+                        'filepath' => $resp['path'],
+                        'type' => 'video'
                     ]);
+                    if (!$video->save()) {
+                        $errors = $video->getErrors();
+                        throw new Exception(current(current($errors)));
+                    }
+                    $model->vid = $video->id;
                 }
             }
 
-            if (!$model->cover) {
-                return $this->asJson([
-                    'status' => false,
-                    'msg' => '请上传封面图'
-                ]);
+            if (isset($_FILES['pic']) && is_array($_FILES['pic']['tmp_name'])) {
+                $pids = [];
+                if ($model->pids) {
+                    $pics = UploadFile::findAll(explode(',', $model->pids));
+                }else {
+                    $pics = [];
+                }
+                foreach ($_FILES['pic']['name'] as $i => $v) {
+                    $pic = new UploadedFile([
+                        'name' => $_FILES['pic']['name'][$i],
+                        'tempName' => $_FILES['pic']['tmp_name'][$i],
+                        'type' => $_FILES['pic']['type'][$i],
+                        'size' => $_FILES['pic']['size'][$i],
+                        'error' => $_FILES['pic']['error'][$i],
+                    ]);
+                    if ($pic && !$pic->hasError && in_array($pic->extension, ['jpg', 'png', 'gif'])) {
+                        $resp = self::saveFile($pic);
+                        if (!$resp) {
+                            continue;
+                        }
+                        $pic = new UploadFile([
+                            'filepath' => $resp['path'],
+                            'url' => $resp['url'],
+                            'type' => 'pic'
+                        ]);
+                        if (!$pic->save()) {
+                            continue;
+                        }
+                        ThumbTrait::setThumb($resp['path']);
+                        if (isset($pics[$i])) {
+                            $pics[$i]->delete();
+                            if (is_file($pics[$i]->filepath)) {
+                                unlink($pics[$i]->filepath);
+                            }
+                            ThumbTrait::deleteThumb($pics[$i]->filepath);
+                        }
+                        $pics[$i] = $pic;
+                    }
+                }
+                $coverSet = false;
+                foreach ($pics as $pic) {
+                    $pids[] = $pic->id;
+                    if (!$coverSet) {
+                        $coverSet = true;
+                        $model->cover = $pic->url;
+                    }
+                }
+                $model->pids = implode(',', $pids);
             }
 
-            $model->save();
+            if (!$model->save()) {
+                $errors = $model->getErrors();
+                throw new Exception(current(current($errors)));
+            }
         } catch (\Exception $e) {
             return $this->asJson([
                 'status' => false,

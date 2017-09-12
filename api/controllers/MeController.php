@@ -118,6 +118,7 @@ class MeController extends \api\lib\Controller
 
        $data = $userField->getAttributes(['uname', 'real_name', 'mobile', 'qq', 'gender', 'province', 'city', 'county']);
        $data['avatar'] = '';
+       $data['nick'] = $user->nick;
 
        if ($userField->avatar) {
            $avatar = UploadFile::findOne(['id' => $userField->avatar]);
@@ -135,6 +136,7 @@ class MeController extends \api\lib\Controller
      * @var integer $uid
      * @var string $session
      * @var File $avatar 头像
+     * @var string $nick
      * @var string $real_name 姓名
      * @var string $mobile 手机
      * @var string $qq QQ
@@ -167,6 +169,20 @@ class MeController extends \api\lib\Controller
         $transaction = \Yii::$app->db->beginTransaction();
 
         try {
+
+            $nick = trim((string)self::getPost('nick', ''));
+            if ($nick==='') {
+                throw new Exception('请填写昵称');
+            }
+
+            $res = new \usersEditNicknameRequest($user->uname);
+            $res->setNickname($nick);
+            $resp = self::execute($res, self::getToken());
+            $check = self::checkApiResult($res, $resp);
+            if (!$check['status']) {
+                throw new Exception($check['msg']);
+            }
+            $user->nick = $nick;
 
             $avatar = UploadedFile::getInstanceByName('avatar');
             if ($avatar
@@ -212,6 +228,11 @@ class MeController extends \api\lib\Controller
             $userField->province = trim((string)self::getPost('province'));
             $userField->city = trim((string)self::getPost('city'));
             $userField->county = trim((string)self::getPost('county'));
+
+            if (!$user->save()) {
+                $errors = $user->errors;
+                throw new Exception(current(current($errors)));
+            }
 
             if (!$userField->save()) {
                 $errors = $userField->errors;
