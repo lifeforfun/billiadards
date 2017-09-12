@@ -8,7 +8,6 @@ use Yii;
  * This is the model class for table "user_field".
  *
  * @property string $uname
- * @property integer $avatar
  * @property string $real_name
  * @property string $mobile
  * @property string $qq
@@ -34,7 +33,6 @@ class UserField extends \yii\db\ActiveRecord
     {
         return [
             [['uname'], 'required'],
-            [['avatar'], 'integer'],
             [['uname'], 'string', 'max' => 40],
             [['real_name'], 'string', 'max' => 255],
             [['mobile', 'province', 'city', 'county'], 'string', 'max' => 30],
@@ -50,7 +48,6 @@ class UserField extends \yii\db\ActiveRecord
     {
         return [
             'uname' => 'Uname',
-            'avatar' => '头像文件id',
             'real_name' => '真实姓名',
             'mobile' => '电话',
             'qq' => 'QQ',

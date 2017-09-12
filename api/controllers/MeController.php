@@ -120,8 +120,8 @@ class MeController extends \api\lib\Controller
        $data['avatar'] = '';
        $data['nick'] = $user->nick;
 
-       if ($userField->avatar) {
-           $avatar = UploadFile::findOne(['id' => $userField->avatar]);
+       if ($user->avatar) {
+           $avatar = UploadFile::findOne(['id' => $user->avatar]);
            $data['avatar'] = ThumbTrait::getThumb($avatar->url, 'small');
        }
 
@@ -198,8 +198,8 @@ class MeController extends \api\lib\Controller
                 if ($avatar->save()) {
 
                     ThumbTrait::setThumb($resp['path']);
-                    if ($userField->avatar
-                        && $oldAvatar = UploadFile::findOne(['id' => $userField->avatar])) {
+                    if ($user->avatar
+                        && $oldAvatar = UploadFile::findOne(['id' => $user->avatar])) {
 
                         $oldAvatar->delete();
                         ThumbTrait::deleteThumb($oldAvatar->filepath);
@@ -208,7 +208,7 @@ class MeController extends \api\lib\Controller
                         }
                     }
 
-                    $userField->avatar = $avatar->id;
+                    $user->avatar = $avatar->id;
                 }
             }
 
@@ -250,8 +250,8 @@ class MeController extends \api\lib\Controller
         $transaction->commit();
 
         $data = $userField->getAttributes(null, ['avatar']);
-        if ($userField->avatar) {
-            $avatar = UploadFile::findOne(['id' => $userField->avatar]);
+        if ($user->avatar) {
+            $avatar = UploadFile::findOne(['id' => $user->avatar]);
             $data['avatar'] = ThumbTrait::getThumb($avatar->url, 'small');
         }
 

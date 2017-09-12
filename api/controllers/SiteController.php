@@ -117,9 +117,8 @@ class SiteController extends \api\lib\Controller
         $data = $loginSession->getAttributes();
         $data['avatar'] = '';
         $data['uname'] = $user->uname;
-        $userField = UserField::findOne(['uname' => $user->uname]);
-        if ($userField && $userField->avatar) {
-            $avatar = UploadFile::findOne(['id' => $userField->avatar]);
+        if ($user->avatar) {
+            $avatar = UploadFile::findOne(['id' => $user->avatar]);
             $data['avatar'] = ThumbTrait::getThumb($avatar->url, 'small');
         }
 

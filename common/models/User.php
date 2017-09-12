@@ -11,6 +11,7 @@ use Yii;
  * @property string $uname
  * @property string $pwd
  * @property string $nick
+ * @property integer $avatar
  * @property string $created
  * @property string $last_login
  */
@@ -31,6 +32,7 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             [['uname', 'pwd', 'nick', 'created', 'last_login'], 'required'],
+            [['avatar'], 'integer'],
             [['created', 'last_login'], 'safe'],
             [['uname', 'nick'], 'string', 'max' => 40],
             [['pwd'], 'string', 'max' => 255],
@@ -45,6 +47,7 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'uid' => 'Uid',
+            'avatar' => '头像文件id',
             'uname' => '邮箱或手机号码',
             'pwd' => '密码',
             'nick' => '昵称',
