@@ -4,7 +4,7 @@ return [
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=billiards',
-            'username' => 'billiards',
+            'username' => 'root',
             'password' => 'admin123',
             'charset' => 'utf8',
         ],
