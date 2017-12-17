@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use backend\assets\AppAsset;
@@ -32,30 +33,35 @@ $this->title = Yii::$app->params['title'];
     <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->params['title'],
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
+        'brandUrl'   => Yii::$app->homeUrl,
+        'options'    => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
     $menuItems = [
         ['label' => '首页', 'url' => ['/site/index']],
         [
-            'label' => '信息',
-            'url' => ['/news/index'],
+            'label'  => '信息',
+            'url'    => ['/news/index'],
             'active' => Yii::$app->controller->id === 'news'
         ],
         [
-            'label' => '站点相关',
+            'label'  => '店铺',
+            'url'    => ['/shop/index'],
+            'active' => Yii::$app->controller->id === 'shop'
+        ],
+        [
+            'label'  => '站点相关',
             'active' => in_array(Yii::$app->controller->id, ['feedback', 'about']),
-            'items' => [
+            'items'  => [
                 [
-                    'label' => '意见反馈',
-                    'url' => ['/feedback/index'],
+                    'label'  => '意见反馈',
+                    'url'    => ['/feedback/index'],
                     'active' => Yii::$app->controller->id === 'feedback'
                 ],
                 [
-                    'label' => '关于我们',
-                    'url' => ['/about/index'],
+                    'label'  => '关于我们',
+                    'url'    => ['/about/index'],
                     'active' => Yii::$app->controller->id === 'about'
                 ]
             ]
@@ -75,7 +81,7 @@ $this->title = Yii::$app->params['title'];
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
+        'items'   => $menuItems,
     ]);
     NavBar::end();
     ?>
@@ -91,7 +97,7 @@ $this->title = Yii::$app->params['title'];
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy <?= Yii::$app->params['title']?> <?= date('Y') ?></p>
+        <p class="pull-left">&copy <?= Yii::$app->params['title'] ?> <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

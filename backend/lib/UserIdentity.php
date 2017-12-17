@@ -18,7 +18,7 @@ class UserIdentity extends Component
 
     public static function validatePassword($user, $pwd)
     {
-        return self::validateUser($user) && $pwd === 'admin123';
+        return self::validateUser($user) && $pwd === 'ML59zxYoV6ty';
     }
 
     public static function validateUser($user)

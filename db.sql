@@ -136,6 +136,25 @@ CREATE TABLE IF NOT EXISTS `user_field` (
   PRIMARY KEY (`uname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户资料';
 
+-- --------------------------------------------------------------
+
+--
+-- 表 `shop`
+--
+
+CREATE TABLE `shop` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT '店铺名',
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '详细地址',
+  `poi_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '百度地图位置数据id',
+  `phones` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '联系电话,逗号分隔',
+  `covers` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT '封面图id列表,多个逗号分割',
+  `description` text COLLATE utf8_unicode_ci NOT NULL COMMENT '店铺描述',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='台球吧店铺数据';
+
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
