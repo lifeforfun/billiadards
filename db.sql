@@ -150,6 +150,8 @@ CREATE TABLE `shop` (
   `phones` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '联系电话,逗号分隔',
   `covers` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT '封面图id列表,多个逗号分割',
   `description` text COLLATE utf8_unicode_ci NOT NULL COMMENT '店铺描述',
+  `longitude` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT '经度',
+  `latitude` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT '纬度',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='台球吧店铺数据';
 

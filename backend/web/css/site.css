@@ -132,3 +132,7 @@ a.desc:after {
 .table > tfoot > tr > td {
     vertical-align:middle;
 }
+
+#poi{
+    min-height:400px;
+}

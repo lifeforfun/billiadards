@@ -2,4 +2,4 @@
 dist
 index.php
 index-test.php
-php_errors.log
+*.log
