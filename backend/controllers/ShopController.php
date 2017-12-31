@@ -54,6 +54,7 @@ class ShopController extends \backend\lib\Controller
         }
 
         /**************** save *****************/
+        $data = self::getPost();
     }
 
     private function getGateWay($api, $data = array())

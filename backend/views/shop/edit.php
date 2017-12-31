@@ -46,7 +46,11 @@ $form = ActiveForm::begin([
     <div class="form-group">
         <label class="col-sm-2 control-label" for="shop-desc">店铺描述</label>
         <div class="col-sm-6">
-            <textarea class="form-control" id="shop-desc" placeholder="店铺描述"
+            <textarea
+                    class="form-control"
+                    id="shop-desc"
+                    placeholder="店铺描述"
+                    name="description"
                       rows="4"><?= $model->description ?></textarea>
         </div>
     </div>
@@ -58,6 +62,12 @@ $form = ActiveForm::begin([
              data-latitude="<?=$model->latitude?>"
         >
 
+        </div>
+    </div>
+    <div class="form-group">
+        <lable class="col-sm-2"></lable>
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-primary btn-large">保存</button>
         </div>
     </div>
 <?php ActiveForm::end() ?>
